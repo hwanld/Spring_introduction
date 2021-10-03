@@ -11,7 +11,7 @@
 <b>의문점 : 같은 이름을 2개 넣게 되면 MemberService객체에서 IlligalStateException 에러를 throw하는데, 이렇게 되면 홈페이지 내에서 Error가 발생하게 된다. 이러한 Error는 어떻게 handling하는가?</b><br><br>
 2021.10.03)<br> 서버가 내려가면 데이터가 전부 사라지기 때문에 데이터를 따로 DB를 저장하고 서버와 DB를 연결한다. 이 연결하는데 필요한 기술은 Jdbc라고 한다. Jdbc->Spring JdbcTemplate->JPA(객체를 Querry 없이 바로 DB에 저장할 수 있다)->스프링 데이터 JPA<br>
 JDBC URL:jdbc:h2:tcp://localhost/~/test ; 파일 직접 접속이 아닌 소켓을 활용한 접속<br><br>
-<리눅스(git bash)> 명령어
+**<리눅스(git bash)> 명령어**
 ll ; 하위 디렉토리의 파일을 보여줌<br>
 ls -arlth ; 마찬가지 디렉토리 내의 파일을 보여줌<br>
 cd ~ ; ~로 디렉토리를 옮겨줌<br>
@@ -26,4 +26,4 @@ spring.datasource.url=jdbc:h2:tcp://localhost/~/test
 spring.datasource.driver-class-name=org.h2.Driver
 spring.datasource.username=sa
 이후 bulid.gradle 파일에서 reload (ctrl+shift+O) 를 사용해서 불러와준다.
-이후 repository에 기존에 만들어 준 MemoryMemberRepository를 대체할 JdbcMemberRepository를 만들고, MemberRepository(Interface)를 implements하도록 만든다. alt+enter를 사용해서 methods를 import해준다. final 형태의 DataSource를 만들어주고 constructor를 만든 다음 method들을 하나하나 DB형식으로 수정해준다. 메소드를 다 구현했다면, configuration을 해준다. (SpringConfig 파일을 통해서 springBean에 띄우고, 조립하고 등을 했었다. 이것을 MemoryMemberRepository에서 JdbcMemberRepository로 바꿔주어야 한다. **여기서 Configuration 파일에 DataSource를 추가하고 그에 따른 생성자와 @Autowired, 그리고 memberRepository를 반환하는 타입을 JdbcMemberRepository로만 바꿔주면 기존에 memory에 저장하던 repository가 이제는 DB에 저장하는 방식으로 바뀐다.;다형성을 활용한다 with Dependency Injection (OOP의 장점)**
+이후 repository에 기존에 만들어 준 MemoryMemberRepository를 대체할 JdbcMemberRepository를 만들고, MemberRepository(Interface)를 implements하도록 만든다. alt+enter를 사용해서 methods를 import해준다. final 형태의 DataSource를 만들어주고 constructor를 만든 다음 method들을 하나하나 DB형식으로 수정해준다. 메소드를 다 구현했다면, configuration을 해준다. (SpringConfig 파일을 통해서 springBean에 띄우고, 조립하고 등을 했었다. 이것을 MemoryMemberRepository에서 JdbcMemberRepository로 바꿔주어야 한다. **여기서 Configuration 파일에 DataSource를 추가하고 그에 따른 생성자와 @Autowired, 그리고 memberRepository를 반환하는 타입을 JdbcMemberRepository로만 바꿔주면 기존에 memory에 저장하던 repository가 이제는 DB에 저장하는 방식으로 바뀐다;다형성을 활용한다 with Dependency Injection (OOP의 장점)**
