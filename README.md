@@ -11,7 +11,7 @@
 <b>의문점 : 같은 이름을 2개 넣게 되면 MemberService객체에서 IlligalStateException 에러를 throw하는데, 이렇게 되면 홈페이지 내에서 Error가 발생하게 된다. 이러한 Error는 어떻게 handling하는가?</b><br><br>
 2021.10.03)<br> 서버가 내려가면 데이터가 전부 사라지기 때문에 데이터를 따로 DB를 저장하고 서버와 DB를 연결한다. 이 연결하는데 필요한 기술은 Jdbc라고 한다. Jdbc->Spring JdbcTemplate->JPA(객체를 Querry 없이 바로 DB에 저장할 수 있다)->스프링 데이터 JPA<br>
 JDBC URL:jdbc:h2:tcp://localhost/~/test ; 파일 직접 접속이 아닌 소켓을 활용한 접속<br><br>
-**<리눅스(git bash)> 명령어**
+**<리눅스(git bash)> 명령어**<br>
 ll ; 하위 디렉토리의 파일을 보여줌<br>
 ls -arlth ; 마찬가지 디렉토리 내의 파일을 보여줌<br>
 cd ~ ; ~로 디렉토리를 옮겨줌<br>
