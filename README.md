@@ -9,7 +9,7 @@
 회원 웹 기능-홈 화면 추가 ; HomeController를 만들고, @GetMapping("/") 을 사용해서 처음 페이지를 시작했을때, 즉 시작 화면 도메인일때를 만들어 주고 templates 파일에 home.html을 만들어서 시작 화면을 home.html 이 되도록 만들어준다. 이때 static페이지로 welcome 페이지를 만들었더라도 톰켓 서버에서 1차로 spring container를 찾기 때문에 기존에 만들어둔 static폴더 안의 index.html은 무시된다. 마찬가지로 @GetMapping("/members/new") 키워드를 사용해서 새로운 도메인에 members/createMemberForm.html을 viewResolver가 뿌려준다. html파일 안의 form 태그에 의해서 post방식으로(주로 등록할 때 post, 조회할 때 get을 사용한다) input받은 값을 @PostMapping 애노테이션이 붙은 method들 중에서 맵핑이 일치한 method로 보낸다. (MemberForm form 객체의 name이라는 instance variable이 MemberForm.setter로 name의 값이 보내진다)<br><br>
 2021.09.27)<br> 회원 웹 기능_조회 구현 : 가입 기능을 구현한 것과 마찬가지로 MemberController Class에서 @GetMapping을 사용, 원하는 주소를 가져온다. 그리고 Model 객체를 가져와서 model.addAttribute method를 사용해서 members/memberList에다가 return한다. 그러면 회원이 저장되어있는 리스트가 통째로 model에 담겨서 members/memberList로 전달된다. 그러고 한 가지 알아야 될 점은 memberList.html파일에서 thymeleaf문법을 사용해서 (자세한 내용은 html파일 참조) members가 전달받은 모델을 끝까지 돌면서 member.id, member.name을 출력해준다. 이때 서버를 껏다가 다시 켜게 되면 당연하게도 데이터가 초기화된다. 따라서 이러한 일을 막기 위해서 실무에서는 DB를 사용하거나 Data를 다른 파일 형식으로 저장해두고 사용한다.
 <b>의문점 : 같은 이름을 2개 넣게 되면 MemberService객체에서 IlligalStateException 에러를 throw하는데, 이렇게 되면 홈페이지 내에서 Error가 발생하게 된다. 이러한 Error는 어떻게 handling하는가?</b><br><br>
-2021.10.03) 서버가 내려가면 데이터가 전부 사라지기 때문에 데이터를 따로 DB를 저장하고 서버와 DB를 연결한다. 이 연결하는데 필요한 기술은 Jdbc라고 한다. Jdbc->Spring JdbcTemplate->JPA(객체를 Querry 없이 바로 DB에 저장할 수 있다)->스프링 데이터 JPA<br>
+2021.10.03)<br> 서버가 내려가면 데이터가 전부 사라지기 때문에 데이터를 따로 DB를 저장하고 서버와 DB를 연결한다. 이 연결하는데 필요한 기술은 Jdbc라고 한다. Jdbc->Spring JdbcTemplate->JPA(객체를 Querry 없이 바로 DB에 저장할 수 있다)->스프링 데이터 JPA<br>
 JDBC URL:jdbc:h2:tcp://localhost/~/test ; 파일 직접 접속이 아닌 소켓을 활용한 접속<br><br>
 <리눅스(git bash)> 명령어
 ll ; 하위 디렉토리의 파일을 보여줌<br>
