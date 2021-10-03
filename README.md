@@ -18,10 +18,10 @@ cd ~ ; ~로 디렉토리를 옮겨줌<br>
 rm ~ ; ~을 삭제해줌<br><br>
 sql파일은 보통 프로젝트 폴더 안에 sql이라는 새로운 디렉토리를 만들고, 그 안에 ddl.sql 등과 같은 파일들을 저장. (깃 등의 버전관리시 편리)<br><br>
 순수 Jdbc ; db에 insert 쿼리, select 쿼리 사용해서 db를 날릴 수 있다. 
-1) build.gradle 파일에 jdbc, h2 DB 관련 라이브러리 추가 
+1) build.gradle 파일에 jdbc, h2 DB 관련 라이브러리 추가 <br>
 implementation 'org.springframework.boot:spring-boot-starter-jdbc' <br>
 runtimeOnly 'com.h2database:h2' <br>
-2) 스프링부트 데이터베이스 연결 설정 추가
+2) 스프링부트 데이터베이스 연결 설정 추가<br>
 spring.datasource.url=jdbc:h2:tcp://localhost/~/test<br>
 spring.datasource.driver-class-name=org.h2.Driver<br>
 spring.datasource.username=sa<br>
