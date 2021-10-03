@@ -9,3 +9,21 @@
 회원 웹 기능-홈 화면 추가 ; HomeController를 만들고, @GetMapping("/") 을 사용해서 처음 페이지를 시작했을때, 즉 시작 화면 도메인일때를 만들어 주고 templates 파일에 home.html을 만들어서 시작 화면을 home.html 이 되도록 만들어준다. 이때 static페이지로 welcome 페이지를 만들었더라도 톰켓 서버에서 1차로 spring container를 찾기 때문에 기존에 만들어둔 static폴더 안의 index.html은 무시된다. 마찬가지로 @GetMapping("/members/new") 키워드를 사용해서 새로운 도메인에 members/createMemberForm.html을 viewResolver가 뿌려준다. html파일 안의 form 태그에 의해서 post방식으로(주로 등록할 때 post, 조회할 때 get을 사용한다) input받은 값을 @PostMapping 애노테이션이 붙은 method들 중에서 맵핑이 일치한 method로 보낸다. (MemberForm form 객체의 name이라는 instance variable이 MemberForm.setter로 name의 값이 보내진다)<br><br>
 2021.09.27)<br> 회원 웹 기능_조회 구현 : 가입 기능을 구현한 것과 마찬가지로 MemberController Class에서 @GetMapping을 사용, 원하는 주소를 가져온다. 그리고 Model 객체를 가져와서 model.addAttribute method를 사용해서 members/memberList에다가 return한다. 그러면 회원이 저장되어있는 리스트가 통째로 model에 담겨서 members/memberList로 전달된다. 그러고 한 가지 알아야 될 점은 memberList.html파일에서 thymeleaf문법을 사용해서 (자세한 내용은 html파일 참조) members가 전달받은 모델을 끝까지 돌면서 member.id, member.name을 출력해준다. 이때 서버를 껏다가 다시 켜게 되면 당연하게도 데이터가 초기화된다. 따라서 이러한 일을 막기 위해서 실무에서는 DB를 사용하거나 Data를 다른 파일 형식으로 저장해두고 사용한다.
 <b>의문점 : 같은 이름을 2개 넣게 되면 MemberService객체에서 IlligalStateException 에러를 throw하는데, 이렇게 되면 홈페이지 내에서 Error가 발생하게 된다. 이러한 Error는 어떻게 handling하는가?</b><br><br>
+2021.10.03) 서버가 내려가면 데이터가 전부 사라지기 때문에 데이터를 따로 DB를 저장하고 서버와 DB를 연결한다. 이 연결하는데 필요한 기술은 Jdbc라고 한다. Jdbc->Spring JdbcTemplate->JPA(객체를 Querry 없이 바로 DB에 저장할 수 있다)->스프링 데이터 JPA<br>
+JDBC URL:jdbc:h2:tcp://localhost/~/test ; 파일 직접 접속이 아닌 소켓을 활용한 접속<br><br>
+<리눅스(git bash)> 명령어
+ll ; 하위 디렉토리의 파일을 보여줌<br>
+ls -arlth ; 마찬가지 디렉토리 내의 파일을 보여줌<br>
+cd ~ ; ~로 디렉토리를 옮겨줌<br>
+rm ~ ; ~을 삭제해줌<br><br>
+sql파일은 보통 프로젝트 폴더 안에 sql이라는 새로운 디렉토리를 만들고, 그 안에 ddl.sql 등과 같은 파일들을 저장. (깃 등의 버전관리시 편리)<br><br>
+순수 Jdbc ; db에 insert 쿼리, select 쿼리 사용해서 db를 날릴 수 있다. 
+1) build.gradle 파일에 jdbc, h2 DB 관련 라이브러리 추가 
+implementation 'org.springframework.boot:spring-boot-starter-jdbc' 
+runtimeOnly 'com.h2database:h2' 
+2) 스프링부트 데이터베이스 연결 설정 추가
+spring.datasource.url=jdbc:h2:tcp://localhost/~/test
+spring.datasource.driver-class-name=org.h2.Driver
+spring.datasource.username=sa
+이후 bulid.gradle 파일에서 reload (ctrl+shift+O) 를 사용해서 불러와준다.
+이후 repository에 기존에 만들어 준 MemoryMemberRepository를 대체할 JdbcMemberRepository를 만들고, MemberRepository(Interface)를 implements하도록 만든다. alt+enter를 사용해서 methods를 import해준다. final 형태의 DataSource를 만들어주고 constructor를 만든 다음 method들을 하나하나 DB형식으로 수정해준다. 메소드를 다 구현했다면, configuration을 해준다. (SpringConfig 파일을 통해서 springBean에 띄우고, 조립하고 등을 했었다. 이것을 MemoryMemberRepository에서 JdbcMemberRepository로 바꿔주어야 한다. **여기서 Configuration 파일에 DataSource를 추가하고 그에 따른 생성자와 @Autowired, 그리고 memberRepository를 반환하는 타입을 JdbcMemberRepository로만 바꿔주면 기존에 memory에 저장하던 repository가 이제는 DB에 저장하는 방식으로 바뀐다.;다형성을 활용한다 with Dependency Injection (OOP의 장점)**
