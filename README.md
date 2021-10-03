@@ -19,11 +19,12 @@ rm ~ ; ~을 삭제해줌<br><br>
 sql파일은 보통 프로젝트 폴더 안에 sql이라는 새로운 디렉토리를 만들고, 그 안에 ddl.sql 등과 같은 파일들을 저장. (깃 등의 버전관리시 편리)<br><br>
 순수 Jdbc ; db에 insert 쿼리, select 쿼리 사용해서 db를 날릴 수 있다. 
 1) build.gradle 파일에 jdbc, h2 DB 관련 라이브러리 추가 
-implementation 'org.springframework.boot:spring-boot-starter-jdbc' 
-runtimeOnly 'com.h2database:h2' 
+implementation 'org.springframework.boot:spring-boot-starter-jdbc' <br>
+runtimeOnly 'com.h2database:h2' <br>
 2) 스프링부트 데이터베이스 연결 설정 추가
-spring.datasource.url=jdbc:h2:tcp://localhost/~/test
-spring.datasource.driver-class-name=org.h2.Driver
-spring.datasource.username=sa
+spring.datasource.url=jdbc:h2:tcp://localhost/~/test<br>
+spring.datasource.driver-class-name=org.h2.Driver<br>
+spring.datasource.username=sa<br>
+
 이후 bulid.gradle 파일에서 reload (ctrl+shift+O) 를 사용해서 불러와준다.
 이후 repository에 기존에 만들어 준 MemoryMemberRepository를 대체할 JdbcMemberRepository를 만들고, MemberRepository(Interface)를 implements하도록 만든다. alt+enter를 사용해서 methods를 import해준다. final 형태의 DataSource를 만들어주고 constructor를 만든 다음 method들을 하나하나 DB형식으로 수정해준다. 메소드를 다 구현했다면, configuration을 해준다. (SpringConfig 파일을 통해서 springBean에 띄우고, 조립하고 등을 했었다. 이것을 MemoryMemberRepository에서 JdbcMemberRepository로 바꿔주어야 한다. **여기서 Configuration 파일에 DataSource를 추가하고 그에 따른 생성자와 @Autowired, 그리고 memberRepository를 반환하는 타입을 JdbcMemberRepository로만 바꿔주면 기존에 memory에 저장하던 repository가 이제는 DB에 저장하는 방식으로 바뀐다;다형성을 활용한다 with Dependency Injection (OOP의 장점)**
