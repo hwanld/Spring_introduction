@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -26,6 +27,7 @@ class MemberServiceIntegrationTest {
     //@AfterEach를 써서 한번 테스트가 끝날 때 마다 DB를 초기화 하였으나 @Transactional때문에 필요가 없다
 
     @Test
+    @Commit
     void 회원가입() { //Testcase의 method들은 한글로 해도 무방하다
         //given when then 주석을 사용해서 testcase를 짜면 편하다 (주석을 깔고 점점 변형할 수 있도록 한다!)
 
